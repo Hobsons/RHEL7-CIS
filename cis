@@ -1,0 +1,73 @@
+#!/bin/bash
+
+    #Create Partitions
+    yum update -y
+
+    #/tmp
+    dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
+    mke2fs /tmp.partition -F
+    mount -o loop,noexec,nosuid,nodev,rw /tmp.partition /tmp
+    chmod 3777 /tmp
+    echo "/tmp.partition /tmp ext2 loop,noexec,nosuid,nodev,rw 0 0" >> /etc/fstab
+
+    #/var/tmp
+    dd if=/dev/zero of=/var/tmp.partition bs=1024 count=2000000
+    mke2fs /var/tmp.partition -F
+    mount -o loop,nosuid,nodev,noexec,rw /var/tmp.partition /var/tmp
+    chmod 3777 /var/tmp
+    echo "/var/tmp.partition /var/tmp ext2 loop,nosuid,nodev,noexec,rw 0 0" >> /etc/fstab
+
+    #Execute Additional CIS hardening updates
+    echo install cramfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install freevxfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install jffs2 /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install hfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install hfsplus /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install squashfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install udf /bin/true >> /etc/modprobe.d/CIS.conf
+
+    echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
+    yum install aide -y
+
+    yum remove prelink -y
+
+    sed -i.orig 's/restrict default kod nomodify notrap nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery/' /etc/ntp.conf
+
+    echo "net.ipv4.conf.all.secure_redirects = 0" >> /etc/sysctl.conf
+    echo "net.ipv4.conf.default.secure_redirects = 0" >> /etc/sysctl.conf
+
+    sysctl -w net.ipv4.conf.all.secure_redirects=0
+    sysctl -w net.ipv4.conf.default.secure_redirects=0
+    sysctl -w net.ipv4.route.flush=1
+
+    echo "net.ipv4.conf.all.rp_filter = 1" >> /etc/sysctl.conf
+    echo "net.ipv4.conf.default.rp_filter = 1" >> /etc/sysctl.conf
+
+    sysctl -w net.ipv4.conf.all.rp_filter=1
+    sysctl -w net.ipv4.conf.default.rp_filter=1
+    sysctl -w net.ipv4.route.flush=1
+
+
+    #echo "net.ipv6.conf.all.accept_ra = 0" >> /etc/sysctl.conf
+    #echo "net.ipv6.conf.default.accept_ra = 0" >> /etc/sysctl.conf
+    #echo "net.ipv6.conf.all.accept_redirects = 0" >> /etc/sysctl.conf
+    #echo "net.ipv6.conf.default.accept_redirects = 0" >> /etc/sysctl.conf
+
+    service network restart
+
+    sysctl -w net.ipv6.conf.all.accept_ra=0
+    sysctl -w net.ipv6.conf.default.accept_ra=0
+    sysctl -w net.ipv6.conf.all.accept_redirects=0
+    sysctl -w net.ipv6.conf.default.accept_redirects=0
+    sysctl -w net.ipv6.route.flush=1
+
+    sed -i.orig 's/root=LABEL=ROOT/root=LABEL=ROOT ipv6.disable=1/'  /boot/grub/grub.conf
+
+    yum install syslog-ng-libdbi syslog-ng -y
+
+    sed -i.orig 's/flush_lines (0);/flush_lines (0); perm (0640);/' /etc/syslog-ng/syslog-ng.conf
+
+    pkill -HUP syslog-ng
+
+    chkconfig syslog-ng on
+    /etc/rc.d/init.d/syslog-ng restart

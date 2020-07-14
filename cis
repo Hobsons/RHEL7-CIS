@@ -71,3 +71,5 @@
 
     chkconfig syslog-ng on
     /etc/rc.d/init.d/syslog-ng restart
+
+    ansible-playbook -i /opt/cis-ansible/hosts /opt/cis-ansible/RHEL7-CIS_Benchmark_L1.yml

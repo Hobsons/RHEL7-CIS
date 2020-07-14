@@ -455,23 +455,23 @@
     - rule_2.2.3
     - disable_service_checks
 
-- name: "SCORED | 2.2.4 | PATCH | Ensure CUPS is not enabled"
-  service:
-      name: cups
-      state: stopped
-      enabled: no
-  when:
-    - rhel7cis_level1 is defined and rhel7cis_level1
-    - rhel7cis_cups_server is defined and (not rhel7cis_cups_server and cups_service_status.stdout == "loaded")
-    - rhel7cis_disable_service_checks is defined and rhel7cis_disable_service_checks
-  tags:
-      - level1
-      - scored
-      - cups
-      - services
-      - patch
-      - rule_2.2.4
-      - disable_service_checks
+#- name: "SCORED | 2.2.4 | PATCH | Ensure CUPS is not enabled"
+ # service:
+ #     name: cups
+  #    state: stopped
+   #   enabled: no
+  #when:
+    #- rhel7cis_level1 is defined and rhel7cis_level1
+    #- rhel7cis_cups_server is defined and (not rhel7cis_cups_server and cups_service_status.stdout == "loaded")
+   # - rhel7cis_disable_service_checks is defined and rhel7cis_disable_service_checks
+  #tags:
+   #   - level1
+    #  - scored
+     # - cups
+     # - services
+     # - patch
+     # - rule_2.2.4
+     # - disable_service_checks
 
 - name: "SCORED | 2.2.5 | PATCH | Ensure DHCP Server is not enabled"
   service:

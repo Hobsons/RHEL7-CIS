@@ -1,190 +1,79 @@
-RHEL 7 CIS STIG
-================
+# RHEL7-CIS - v2.2.0.1 - Latest
 
-[![Build Status](https://travis-ci.org/MindPointGroup/RHEL7-CIS.svg?branch=devel)](https://travis-ci.org/MindPointGroup/RHEL7-CIS)
-[![Ansible Role](https://img.shields.io/ansible/role/16089.svg)](https://galaxy.ansible.com/MindPointGroup/RHEL7-CIS/)
+## RHEL 7 - CIS Benchmark Hardening Script
 
-Configure RHEL/Centos 7 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant. Level 1 and 2 findings will be corrected by default.
+This Ansible script is under development and is considered a work in progress.
 
-This role **will make changes to the system** that could break things. This is not an auditing tool but rather a remediation tool to be used after an audit has been conducted.
+This Ansible script can be used to harden a RHEL 7 machine to be CIS compliant to meet level 1 or level 2 requirements.
 
-## IMPORTANT INSTALL STEP
+This role will make significant changes to systems and could break the running operations of machines. Considering using this script on a test machine before using the script against other production level systems for remediation. Use this script at your own risk and no warranty is attached for the usage of this script as dictated by the license.
 
-If you want to install this via the `ansible-galaxy` command you'll need to run it like this:
-
-`ansible-galaxy install -p roles -r requirements.yml`
-
-With this in the file requirements.yml:
-
+## System Requirements
 ```
-- src: https://github.com/MindPointGroup/RHEL7-CIS.git
+Ansible 2.5+
+RHEL 7.x+
 ```
-
-Based on [CIS RedHat Enterprise Linux 7 Benchmark v2.1.1 - 01-31-2017 ](https://community.cisecurity.org/collab/public/index.php).
-
-This repo originated from work done by [Sam Doran](https://github.com/samdoran/ansible-role-stig)
-
-Requirements
-------------
-
-You should carefully read through the tasks to make sure these changes will not break your systems before running this playbook.
-If you want to do a dry run without changing anything, set the below sections (rhel7cis_section1-6) to false. 
-
-Role Variables
---------------
-There are many role variables defined in defaults/main.yml. This list shows the most important.
-
-**rhel7cis_notauto**: Run CIS checks that we typically do NOT want to automate due to the high probability of breaking the system (Default: false)
-
-**rhel7cis_section1**: CIS - General Settings (Section 1) (Default: true)
-
-**rhel7cis_section2**: CIS - Services settings (Section 2) (Default: true)
-
-**rhel7cis_section3**: CIS - Network settings (Section 3) (Default: true)
-
-**rhel7cis_section4**: CIS - Logging and Auditing settings (Section 4) (Default: true)
-
-**rhel7cis_section5**: CIS - Access, Authentication and Authorization settings (Section 5) (Default: true)
-
-**rhel7cis_section6**: CIS - System Maintenance settings (Section 6) (Default: true)  
-
-##### Disable all selinux functions
-`rhel7cis_selinux_disable: false`
-
-##### Service variables:
-###### These control whether a server should or should not be allowed to continue to run these services
-
+## Role
 ```
-rhel7cis_avahi_server: false  
-rhel7cis_cups_server: false  
-rhel7cis_dhcp_server: false  
-rhel7cis_ldap_server: false  
-rhel7cis_telnet_server: false  
-rhel7cis_nfs_server: false  
-rhel7cis_rpc_server: false  
-rhel7cis_ntalk_server: false  
-rhel7cis_rsyncd_server: false  
-rhel7cis_tftp_server: false  
-rhel7cis_rsh_server: false  
-rhel7cis_nis_server: false  
-rhel7cis_snmp_server: false  
-rhel7cis_squid_server: false  
-rhel7cis_smb_server: false  
-rhel7cis_dovecot_server: false  
-rhel7cis_httpd_server: false  
-rhel7cis_vsftpd_server: false  
-rhel7cis_named_server: false  
-rhel7cis_bind: false  
-rhel7cis_vsftpd: false  
-rhel7cis_httpd: false  
-rhel7cis_dovecot: false  
-rhel7cis_samba: false  
-rhel7cis_squid: false  
-rhel7cis_net_snmp: false  
-```  
-
-##### Designate server as a Mail server
-`rhel7cis_is_mail_server: false`
-
-
-##### System network parameters (host only OR host and router)
-`rhel7cis_is_router: false`  
-
-
-##### IPv6 required
-`rhel7cis_ipv6_required: true`  
-
-
-##### AIDE
-`rhel7cis_config_aide: true`
-
-###### AIDE cron settings
+role: RHEL7-CIS
 ```
-rhel7cis_aide_cron:
-  cron_user: root
-  cron_file: /etc/crontab
-  aide_job: '/usr/sbin/aide --check'
-  aide_minute: 0
-  aide_hour: 5
-  aide_day: '*'
-  aide_month: '*'
-  aide_weekday: '*'  
+## Role/Playbook Tags
 ```
-
-##### SELinux policy
-`rhel7cis_selinux_pol: targeted` 
-
-
-##### Set to 'true' if X Windows is needed in your environment
-`rhel7cis_xwindows_required: no` 
-
-
-##### Client application requirements
+tags: 
+level1
+level2
+always
+prelim_tasks
+post_tasks
 ```
-rhel7cis_openldap_clients_required: false 
-rhel7cis_telnet_required: false 
-rhel7cis_talk_required: false  
-rhel7cis_rsh_required: false 
-rhel7cis_ypbind_required: false 
+## Section Vars
 ```
-
-##### Time Synchronization
+section1
+section2
+section3
+section4
+section5
+section6
 ```
-rhel7cis_time_synchronization: chrony
-rhel7cis_time_Synchronization: ntp
-
-rhel7cis_time_synchronization_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org  
-```  
-  
-##### 3.4.2 | PATCH | Ensure /etc/hosts.allow is configured
+## Vars
 ```
-rhel7cis_host_allow:
-  - "10.0.0.0/255.0.0.0"  
-  - "172.16.0.0/255.240.0.0"  
-  - "192.168.0.0/255.255.0.0"    
-```  
-
+Refer to defaults/main.yml for other vars
 ```
-rhel7cis_firewall: firewalld
-rhel7cis_firewall: iptables
-``` 
-  
-
-Dependencies
-------------
-
-Ansible > 2.2
-
-Example Playbook
--------------------------
-
-This sample playbook should be run in a folder that is above the main RHEL7-CIS / RHEL7-CIS-devel folder.
-
+## Sample Playbook.ymls
 ```
-- name: Harden Server
-  hosts: servers
-  become: yes
-
-  roles:
-    - RHEL7-CIS
+Refer to RHEL7-CIS_Benchmark_(level1, level1_and_level2, or level2).ymls for sample playbook.ymls. Change the role to match role folder name.
 ```
+## License
+MIT License
 
-Tags
-----
-Many tags are available for precise control of what is and is not changed.
+Copyright for portions of RHEL7-CIS are held by
 
-Some examples of using tags:
+Copyright (c) 2015 MindPoint Group http://www.mindpointgroup.com
 
-```
-    # Audit and patch the site
-    ansible-playbook site.yml --tags="patch"
-```
+as part of RHEL7-CIS.
 
-License
--------
+All other copyright for project RHEL7-CIS are held by 
 
-MIT
+Copyright (c) 2018-2019 Radsec
+
+AND
+
+Copyright (c) 2018-2019 Coalfire
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

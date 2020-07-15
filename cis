@@ -29,8 +29,6 @@
     echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
     yum install aide -y
 
-    yum remove prelink -y
-
     sed -i.orig 's/restrict default kod nomodify notrap nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery/' /etc/ntp.conf
 
     echo "net.ipv4.conf.all.secure_redirects = 0" >> /etc/sysctl.conf
@@ -60,16 +58,5 @@
     sysctl -w net.ipv6.conf.all.accept_redirects=0
     sysctl -w net.ipv6.conf.default.accept_redirects=0
     sysctl -w net.ipv6.route.flush=1
-
-    sed -i.orig 's/root=LABEL=ROOT/root=LABEL=ROOT ipv6.disable=1/'  /boot/grub/grub.conf
-
-    yum install syslog-ng-libdbi syslog-ng -y
-
-    sed -i.orig 's/flush_lines (0);/flush_lines (0); perm (0640);/' /etc/syslog-ng/syslog-ng.conf
-
-    pkill -HUP syslog-ng
-
-    chkconfig syslog-ng on
-    /etc/rc.d/init.d/syslog-ng restart
 
     ansible-playbook -i /opt/cis-ansible/hosts /opt/cis-ansible/RHEL7-CIS_Benchmark_L1.yml

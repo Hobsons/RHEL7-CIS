@@ -59,4 +59,4 @@
     sysctl -w net.ipv6.conf.default.accept_redirects=0
     sysctl -w net.ipv6.route.flush=1
 
-    ansible-playbook -i /opt/cis-ansible/hosts /opt/cis-ansible/RHEL7-CIS_Benchmark_L1.yml
+    

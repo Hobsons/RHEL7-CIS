@@ -4,27 +4,27 @@
     yum update -y
 
     #/tmp
-    #dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
-    #mke2fs /tmp.partition -F
-    #mount -o loop,nosuid,nodev,rw /tmp.partition /tmp
-    #chmod 3777 /tmp
-    #echo "/tmp.partition /tmp ext2 loop,nosuid,noexec,nodev,rw 0 0" >> /etc/fstab
+    dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
+    mke2fs /tmp.partition -F
+    mount -o loop,nosuid,nodev,rw /tmp.partition /tmp
+    chmod 3777 /tmp
+    echo "/tmp.partition /tmp ext2 loop,nosuid,noexec,nodev,rw 0 0" >> /etc/fstab
 
     #/var/tmp
-    #dd if=/dev/zero of=/var/tmp.partition bs=1024 count=2000000
-    #mke2fs /var/tmp.partition -F
-    #mount -o loop,nosuid,nodev,noexec,rw /var/tmp.partition /var/tmp
-    #chmod 3777 /var/tmp
-    #echo "/var/tmp.partition /var/tmp ext2 loop,nosuid,nodev,noexec,rw 0 0" >> /etc/fstab
+    dd if=/dev/zero of=/var/tmp.partition bs=1024 count=2000000
+    mke2fs /var/tmp.partition -F
+    mount -o loop,nosuid,nodev,noexec,rw /var/tmp.partition /var/tmp
+    chmod 3777 /var/tmp
+    echo "/var/tmp.partition /var/tmp ext2 loop,nosuid,nodev,noexec,rw 0 0" >> /etc/fstab
 
     #Execute Additional CIS hardening updates
-    #echo install cramfs /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install freevxfs /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install jffs2 /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install hfs /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install hfsplus /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install squashfs /bin/true >> /etc/modprobe.d/CIS.conf
-    #echo install udf /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install cramfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install freevxfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install jffs2 /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install hfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install hfsplus /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install squashfs /bin/true >> /etc/modprobe.d/CIS.conf
+    echo install udf /bin/true >> /etc/modprobe.d/CIS.conf
 
     #echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
     #yum install aide -y

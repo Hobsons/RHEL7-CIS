@@ -26,10 +26,10 @@
     echo install squashfs /bin/true >> /etc/modprobe.d/CIS.conf
     echo install udf /bin/true >> /etc/modprobe.d/CIS.conf
 
-    #echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
-    #yum install aide -y
+    echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
+    yum install aide -y
 
-    #sed -i.orig 's/restrict default kod nomodify notrap nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery/' /etc/ntp.conf
+    sed -i.orig 's/restrict default kod nomodify notrap nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery/' /etc/ntp.conf
 
     #echo "net.ipv4.conf.all.secure_redirects = 0" >> /etc/sysctl.conf
     #echo "net.ipv4.conf.default.secure_redirects = 0" >> /etc/sysctl.conf

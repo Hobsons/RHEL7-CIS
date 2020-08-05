@@ -41,13 +41,13 @@
     echo "OPTIONS='-u chrony'" >> /etc/chrony.conf
     
     #1.4.2 Ensure bootloader password is set
-    printf '%s\n' "test" "test" | script -qf -c 'grub2-setpassword' /dev/null
+    #printf '%s\n' "test" "test" | script -qf -c 'grub2-setpassword' /dev/null
 
     #1.4.1 Ensure permissions on bootloader config are configured
     chown root:root /boot/grub2/grub.cfg
     chmod og-rwx /boot/grub2/grub.cfg
-    chown root:root /boot/grub2/user.cfg
-    chmod og-rwx /boot/grub2/user.cfg
+    #chown root:root /boot/grub2/user.cfg
+    #chmod og-rwx /boot/grub2/user.cfg
     
     #3.3.3 Ensure IPv6 is disabled
     sed -i.orig 's/GRUB_CMDLINE_LINUX=/GRUB_CMDLINE_LINUX=ipv6.disable=1/' /etc/default/grub

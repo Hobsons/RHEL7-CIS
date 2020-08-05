@@ -2,7 +2,7 @@
 
     #Create Partitions
     yum update -y
-    yum update --security
+    yum update --security -y
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000

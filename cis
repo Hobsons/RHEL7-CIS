@@ -2,7 +2,7 @@
 
     #Create Partitions
     yum update -y
-    #yum update --security -y
+    yum update --security -y
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
@@ -54,9 +54,9 @@
     grub2-mkconfig > /boot/grub2/grub.cfg
     
     #3.6.2 Ensure default deny firewall policy
-    iptables -P INPUT DROP
-    iptables -P OUTPUT DROP
-    iptables -P FORWARD DROP
+    #iptables -P INPUT DROP
+    #iptables -P OUTPUT DROP
+    #iptables -P FORWARD DROP
     
     #3.6.3 Ensure loopback traffic is configured - input
     iptables -A INPUT -i lo -j ACCEPT

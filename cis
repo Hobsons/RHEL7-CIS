@@ -32,15 +32,17 @@
     
     yum install aide -y
     
-    #2.2.1.2 Ensure ntp is configured - restrict -4
-    sed -i.orig 's/restrict default kod notrap nomodify nopeer noquery/restrict -4 default kod nomodify notrap nopeer noquery/' /etc/ntp.conf
+    net.ipv6.conf.all.accept_ra = 0
+    net.ipv6.conf.default.accept_ra = 0
+    net.ipv6.conf.all.accept_redirects = 0
+    net.ipv6.conf.default.accept_redirects = 0
     
-    #2.2.1.2 Ensure ntp is configured - server
-    echo "server 10.0.0.2" >> /etc/ntp.conf
+    sysctl -w net.ipv6.conf.all.accept_ra=0
+    sysctl -w net.ipv6.conf.default.accept_ra=0
+    sysctl -w net.ipv6.conf.all.accept_redirects=0
+    sysctl -w net.ipv6.conf.default.accept_redirects=0
+    sysctl -w net.ipv6.route.flush=1
 
-    #2.2.1.3 Ensure chrony is configured - NTP server
-    echo "OPTIONS='-u chrony'" >> /etc/chrony.conf
-    
     #1.4.2 Ensure bootloader password is set
     printf '%s\n' "test" "test" | script -qf -c 'grub2-setpassword' /dev/null
 
@@ -54,10 +56,18 @@
     sed -i.orig 's/GRUB_CMDLINE_LINUX=/GRUB_CMDLINE_LINUX=ipv6.disable=1/' /etc/default/grub
     grub2-mkconfig > /boot/grub2/grub.cfg
     
+    #3.4.2 Ensure /etc/hosts.allow is configured
+    echo 'ALL: 10.0.0.0/255.0.0.010.0.0.0/255.0.0.0,172.16.0.0/255.240.0.0172.16.0.0/255.240.0.0,192.168.0.0/255.255.0.0192.168.0.0/255.255.0.0' >/etc/hosts.allow
+    #3.4.3 Ensure /etc/hosts.deny is configured
+    echo 'ALL: ALL' >> /etc/hosts.deny
+    
     #3.6.2 Ensure default deny firewall policy
-    #iptables -P INPUT DROP
-    #iptables -P OUTPUT DROP
-    #iptables -P FORWARD DROP
+    iptables -P INPUT DROP
+    iptables -P OUTPUT DROP
+    iptables -P FORWARD DROP
+
+    iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+    iptables -A INPUT -p tcp --dport 22 -j ACCEPT
     
     #3.6.3 Ensure loopback traffic is configured - input
     iptables -A INPUT -i lo -j ACCEPT

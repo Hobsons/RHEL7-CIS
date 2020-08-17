@@ -62,11 +62,11 @@
     echo 'ALL: ALL' >> /etc/hosts.deny
     
     #3.6.2 Ensure default deny firewall policy
-    iptables -P INPUT DROP
-    iptables -P OUTPUT DROP
-    iptables -P FORWARD DROP
+    #iptables -P INPUT DROP
+    #iptables -P OUTPUT DROP
+    #iptables -P FORWARD DROP
 
-    iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+    #iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
     
     #3.6.3 Ensure loopback traffic is configured - input
     iptables -A INPUT -i lo -j ACCEPT

@@ -10,7 +10,7 @@
     mke2fs /tmp.partition -F
     mount -o loop,nosuid,nodev,rw /tmp.partition /tmp
     chmod 3777 /tmp
-    echo "/tmp.partition /tmp ext2 loop,nosuid,noexec,nodev,rw 0 0" >> /etc/fstab
+    echo "/tmp.partition /tmp ext2 loop,nosuid,nodev,rw 0 0" >> /etc/fstab
 
     #/var/tmp
     dd if=/dev/zero of=/var/tmp.partition bs=1024 count=2000000
@@ -55,7 +55,12 @@
     #3.3.3 Ensure IPv6 is disabled
     sed -i.orig 's/GRUB_CMDLINE_LINUX=/GRUB_CMDLINE_LINUX=ipv6.disable=1/' /etc/default/grub
     grub2-mkconfig > /boot/grub2/grub.cfg
-        
+    
+    #3.4.2 Ensure /etc/hosts.allow is configured
+    echo 'ALL: ALL' > /etc/hosts.allow
+    #3.4.3 Ensure /etc/hosts.deny is configured
+    echo 'ALL: ALL' > /etc/hosts.deny
+    
     #3.6.2 Ensure default deny firewall policy
     #iptables -P INPUT DROP
     #iptables -P OUTPUT DROP
@@ -94,11 +99,6 @@
 
     sed -i.orig 's/umask 002/umask 027/' /etc/profile
     sed -i.orig 's/umask 23/umask 027/' /etc/profile
-
-    #3.4.2 Ensure /etc/hosts.allow is configured
-    echo 'ALL: ALL' > /etc/hosts.allow
-    #3.4.3 Ensure /etc/hosts.deny is configured
-    echo 'ALL: ALL' > /etc/hosts.deny
 
     
     exit 0

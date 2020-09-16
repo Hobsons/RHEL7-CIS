@@ -6,6 +6,7 @@
     yum install htop -y
     yum install cloud-init -y
     rm /etc/sudoers.d/90-cloud-init-users
+    rm /etc/ssh/ssh_host_rsa_key
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000

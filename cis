@@ -4,13 +4,15 @@
     yum update -y
     yum update --security -y
     yum install htop -y
+    yum install cloud-init -y
+    rm /etc/sudoers.d/90-cloud-init-users
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
     mke2fs /tmp.partition -F
     mount -o loop,nosuid,nodev,rw /tmp.partition /tmp
     chmod 3777 /tmp
-    echo "/tmp.partition /tmp ext2 loop,nosuid,nodev,rw 0 0" >> /etc/fstab
+    echo "/tmp.partition /tmp ext2 loop,nosuid,noexec,nodev,rw 0 0" >> /etc/fstab
 
     #/var/tmp
     dd if=/dev/zero of=/var/tmp.partition bs=1024 count=2000000

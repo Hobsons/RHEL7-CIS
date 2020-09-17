@@ -6,32 +6,6 @@
     yum install htop -y
     yum install cloud-init -y
 
-    rm /etc/sudoers.d/90-cloud-init-users
-    rm /etc/ssh/ssh_host_rsa_key
-    rm /etc/ssh/ssh_host_rsa_key.pub
-    rm /etc/ssh/ssh_host_ecdsa_key
-    rm /etc/ssh/ssh_host_ecdsa_key.pub
-    rm /etc/ssh/ssh_host_ed25519_key
-    rm /etc/ssh/ssh_host_ed25519_key.pub
-    rm /etc/.updated
-    rm /etc/aliases.db
-    rm /etc/hostname
-    rm /etc/locale.conf
-    rm /var/cache/yum/x86_64/2/.gpgkeyschecked.yum
-    rm /var/log/audit/audit.log
-    rm /var/log/boot.log
-    rm /var/log/dmesg
-    rm /var/log/cloud-init.log
-    rm /var/log/cloud-init-output.log
-    rm /var/log/cron
-    rm /var/lib/misc/postfix.aliasesdb-stamp
-    rm /var/lib/postfix/master.lock
-    rm /var/spool/postfix/pid/master.pid
-    rm /var/.updated
-    rm /home/ec2-user/.ssh/authorized_keys
-    rm /home/ec2-user/.bash_history
-    rm /root/.ssh/authorized_keys
-
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
     mke2fs /tmp.partition -F

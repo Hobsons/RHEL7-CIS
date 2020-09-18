@@ -4,10 +4,6 @@
     yum update -y
     yum update --security -y
     yum install htop -y
-    yum install cloud-init -y
-
-    rm ~/.ssh/authorized_keys
-    cp ~/.ssh/sf-rsa-dev-us-east.pub ~/.ssh/authorized_keys
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000

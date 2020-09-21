@@ -5,8 +5,6 @@
     yum update --security -y
     yum install htop -y
 
-    echo "export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin" > /etc/profile.d/path.sh
-
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
     mke2fs /tmp.partition -F

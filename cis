@@ -30,7 +30,7 @@
     
     echo "gpgcheck=1" >> /etc/yum.repos.d/CIS.conf
     
-    #yum install aide -y
+    yum remove aide -y
     
     net.ipv6.conf.all.accept_ra = 0
     net.ipv6.conf.default.accept_ra = 0

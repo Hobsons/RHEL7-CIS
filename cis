@@ -3,7 +3,7 @@
     #Create Partitions
     yum update -y
     yum update --security -y
-    yum install htop lsof -y
+    yum install htop lsof zip -y
 
     #/tmp
     dd if=/dev/zero of=/tmp.partition bs=1024 count=2000000
